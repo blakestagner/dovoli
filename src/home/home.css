@@ -1,0 +1,10 @@
+.right-nav {
+    background-color: yellow;
+    width: 100%;
+    height: 100%;
+}
+@media (max-width: 768px) {
+    .right-nav {
+        display: none;
+    }
+}

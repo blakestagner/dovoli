@@ -1,0 +1,97 @@
+
+.imgLeft {
+    float: left;
+    width: 40vw;
+    /*clip-path: circle(65.5% at 12% 50%);*/
+    clip-path: ellipse(85% 50% at 15% 50%);
+
+}
+.imgLeftMobile {
+    display: none;
+}
+.imgRight {
+    float: right;
+    margin-top: 0px;
+    width: 40vw;
+    
+}
+.imgRightMobile {
+    display: none;
+}
+@media only screen and (max-width: 768px) { 
+    .imgLeft {
+        display: none;
+    }
+    .imgLeftMobile {
+        background-image: url(../img/pics/Mae.JPG);
+        display: block;
+        height: 20vh;
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+        clip-path: ellipse(62% 100% at 30% 100%);
+    }
+    .imgRight {
+        display: none;
+    }
+    .imgRightMobile {
+        background-image: url(../img/pics/Mae.JPG);
+        display: block;
+        height: 20vh;
+        background-position: center top;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+}
+.homeText {
+    align-content: center;
+
+}
+.homeText h1 {
+    font-size: 50px;
+    font-family: 'Playlist Script';
+    font-weight: normal;
+    margin-top: 25px;
+}
+.landing-container {
+    margin-bottom: 50px;
+    height: fit-content;
+}
+.landing-icon {
+    background-color: #03045e;
+    border-radius: 50%;
+    height: 60px;
+    width: 60px;
+    padding: 5px;
+    margin: 30px auto 20px;
+    display: flex;
+  }
+  .landing-hr {
+    width: 100px;
+    height: 5px;
+    margin: 100px auto;
+    background-color: #03045e;
+    border-radius: 25px;
+  }
+  .hr-text {
+    width: 50px;
+    height: 5px;
+    margin: 10px auto;
+    border-radius: 25px;
+  }
+  .footer-pencil {
+    background-image: url(./img/footer.png);
+    display: block;
+    height: 20vh;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    margin-bottom: -50px;
+  }
+  .landing {
+      max-width: 1500px;
+      margin: 0 auto;
+  }

@@ -1,0 +1,34 @@
+.default-profile-img {
+    height: 60px;
+    width: 60px;
+    padding: 0 10px 0px 5px;
+}
+.profile-img {
+    height: 60px;
+    width: 60px;
+    padding: 0 10px 0px 5px;
+    border-radius: 50%;
+}
+.profileName {
+    flex: 1 0 auto;
+    width: min-content;
+    line-height: 1.5;
+    height: 60px;
+    display: flex;
+    align-items: center
+}
+.profileIcons {
+    background-color: #03045e;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    padding: 2px;
+    margin: 0 10px 0px 10px;
+}
+.profileText {
+    flex: 1 0 auto;
+    line-height: 1.5;
+    height: 30px;
+    display: flex;
+    align-items: center;
+}

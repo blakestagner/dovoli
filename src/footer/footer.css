@@ -1,0 +1,22 @@
+footer {
+    background-color: #03045e;
+    color: #fff;
+    width: auto;
+    height: 700px;
+    text-align: center;
+    clear: both;
+    padding: 30px 10px;
+    position: relative;
+}
+footer h1 {
+    font-size: 60px;
+    margin-bottom: 0px;
+}
+footer h2 {
+    font-size: 40px;
+    margin: 0px auto 0px;
+    font-weight: normal;
+}
+footer p {
+    font-weight: bold;
+}

@@ -1,0 +1,37 @@
+.heroImg {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), url("./img/hero.jpg");
+  height: 65vh;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  clip-path: ellipse(84% 70% at 25% 30%);
+}
+@media only screen and (max-width: 850px) { 
+  .heroImg {
+    background-position: center left;
+  }
+} 
+.loggedinImg {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./img/loggedIn.jpg");
+  height: 20vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.heroText {
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    color: white;
+    margin-top: 50px;
+    transform: translate(0%, 20vh);
+}
+  .heroText h1 {
+    font-size: 50px;
+    margin-bottom: 5px;
+}
+  .heroText h2 {
+    font-size: 30px;
+}

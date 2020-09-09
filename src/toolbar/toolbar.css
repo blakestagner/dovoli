@@ -1,0 +1,131 @@
+.navBar {
+    background-color: transparent;
+    color: #fff !important;
+    position: fixed;
+    width: 100vw;
+    z-index: 30;
+  }
+  .scrollBar {
+    background-color: #fff;
+    color: #000 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  }
+  .white li  a{
+    color: #fff!important;
+  }
+  .black li a{
+    color: #000;
+  }
+  .navBarContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .navBarTitle {
+    margin-left: 25px;
+    margin-right: 1rem;
+  }
+  .navBarTitle h1 a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .navBar ul {
+    flex-direction: row;
+    display: flex;
+    flex-basis: auto;
+    margin-left: auto;
+    padding-right: 25px;
+  }
+  .navBar ul li {
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .navBar ul li a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .navList {
+    text-decoration: none;
+  }
+
+  #mobileMenu {
+    background-color: #fff;
+    color: #000;
+    position: fixed;
+    height: 100vh;
+    width: 55vw;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  }
+  
+  .mobileNavBarList {
+    flex-direction: column !important;
+    display: flex;
+    list-style: none;
+    text-align: left;
+    font-size: 25px;
+    padding-left: 5px;
+    color: #000;
+  }
+  .mobileNavBarList li {
+    margin-bottom: 20px;
+  }
+  .mobileNavBarList li a {
+    color: #000;
+    text-decoration: none;
+  }
+  .mmClosed {
+    left: 110vw;
+    margin-left: 10px;
+  }
+  .mmOpen {
+    left: 45vw;
+  }
+@media only screen and (max-width: 600px) { 
+    .menuList {
+      display: none !important;
+    }
+}
+@media only screen and (min-width: 600px) {
+  #navManuIcon {
+    display: none;
+  }
+  #mobileMenu {
+    display: none;
+  }
+}
+
+/*loggedin Menu */
+.navBarLI {
+  background-color: #fff;
+  color: #03045e !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  position: fixed;
+  width: 100vw;
+  z-index: 30;
+  height: 85px;
+}
+.navBarLI ul {
+  flex-direction: row;
+  display: flex;
+  flex-basis: auto;
+  margin-left: auto;
+  padding-right: 25px;
+}
+.navBarLI ul li {
+  display: flex;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.navBarLI ul li a{
+  color: #000;
+  text-decoration: none;
+}
+.navList {
+  text-decoration: none;
+}
+.toolbar-avatar {
+  margin-left: 10px;
+}

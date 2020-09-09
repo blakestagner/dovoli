@@ -1,0 +1,44 @@
+.App {
+  text-align: center;
+}
+.main {
+  color: black;
+  margin: 50px 0px 50px;
+  padding-top: 85px;
+}
+.content-main {
+  max-width: 600px;
+  margin: 0 auto;
+}
+.main-container {
+  padding: 50px 0 0;
+}
+.overlay {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  position: absolute;
+}
+.successMsg {
+  color: blue;
+}
+.intermediate {
+  outline: '2px auto rgba(19,124,189,.6)';
+}
+.checkBoxLabel {
+  font-size: 1.5em !important;
+}
+.vueeduDarkBlue {
+  background-color: #03045e;
+}
+.vueeduDarkBlue2 {
+  background-color: #0077b6;
+}
+.vueeduMiddleBlue {
+  background-color: #00b4d8;
+}

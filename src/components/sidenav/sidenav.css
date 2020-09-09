@@ -1,0 +1,19 @@
+.side-nav {
+    color: #000;
+}
+.side-nav h2 {
+    color: #000;
+    margin: 0;
+}
+.side-nav ul {
+    padding: 0px;
+    list-style-type: none;
+}
+.side-nav ul li a {
+    cursor: pointer;
+}
+@media (max-width: 768px) {
+    .side-nav {
+        display: none;
+    }
+}
