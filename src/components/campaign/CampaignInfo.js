@@ -300,7 +300,7 @@ export function CandidateCallList() {
             </FormControl>
             <Grid container item xs={12}>
                 <div className="card col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                    <div className="cardInner">
+                    <div className="cardMain">
                     {callList.filter(calls => calls.contacted == sortList.sort ).map(calls => (
                         <Grid item key={calls.id} lg={12}>
                             <div className="row campaign-text">
