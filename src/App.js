@@ -10,7 +10,6 @@ import Home from './home/Home';
 import Settings from './components/profile/Settings';
 import { isAuthenticated, getUserInfo } from './autho/Repository';
 import UserLogin from './register/UserLogin';
-import Notes from './components/notes/Notes'
 
 
 class App extends React.Component {
@@ -70,16 +69,6 @@ class App extends React.Component {
                   path="/home" 
                   render={props => (
                     <Home 
-                      {...props}
-                      userDetails={this.state.userDetails} 
-                      isLoggedIn={this.state.isLoggedIn}/>
-                  )} 
-                  />
-                  <Route
-                  exact 
-                  path="/notes" 
-                  render={props => (
-                    <Notes
                       {...props}
                       userDetails={this.state.userDetails} 
                       isLoggedIn={this.state.isLoggedIn}/>

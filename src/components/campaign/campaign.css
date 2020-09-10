@@ -1,0 +1,44 @@
+.rep {
+    background: #ff0000;
+    color: #fff;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    font-size: 45px;
+    font-weight: bold;
+    margin-right: 20px;
+}
+.card-header-icon {
+    background: green;
+    color: #fff;
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    font-size: 45px;
+    font-weight: bold;
+    margin-right: 20px;
+    padding: 5px;
+}
+.call-header {
+    flex: 1 0 auto;
+    width: min-content;
+    line-height: 1.5;
+    display: flex;
+    align-items: center;
+    font-size: 25px;
+}
+.rep-letter {
+    margin: auto;
+    line-height: 1.25;
+}
+.campaign-icons {
+    height: 30px;
+    width: 30px;
+    margin: 0 10px 0px 10px;
+}
+.campaign-text {
+    color: #444;
+}
+#countdown {
+    font-weight: bold;
+}

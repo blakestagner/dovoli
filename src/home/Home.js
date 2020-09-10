@@ -1,53 +1,62 @@
 import React from 'react';
-import MyPlans from '../components/planner/MyPlans';
-import PlannerSideNav from '../components/sidenav/PlannerSideNav';
 import AddToPlanner from '../components/planner/AddToPlanner';
 import PlannerDateView from '../components/planner/PlannerDateView';
-import home from './home.css';
 import PlannerDate from '../components/planner/PlannerDate'
-import Planner from '../components/planner/Planner'
+import CampaignOverview from './CampaignOverview'
+import Sidenav from '../components/sidenav/Sidenav'
+import Post from './Post'
+import { 
+        ElectionCountdown, 
+        CampaignCallsMade, 
+        CampaignInfo,
+        CandidateCallList } from '../components/campaign/CampaignInfo';
 
 export default class Home extends React.Component {
     constructor(props) {
         super(props) 
         this.state = {
-            openComponent: 'my planner'
+            openComponent: 'home',
+            updateState: ''
         }
         this.setComponent = this.setComponent.bind(this)
     }
     setComponent(e) {
         this.setState({openComponent: e.target.name})
     }
+    updateState() {
+        this.setState({updateState: 'yes'})
+    }
     render() {
         return (
             <div className="main-container">
                 <div className="row">
                     <div className="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-                        <PlannerSideNav 
+                        <Sidenav 
                             setPlanner={this.setComponent}
                             />
                     </div>
                     <div className="col-xs-12 col-sm-8 col-md-7 col-lg-7">
-                        {this.state.openComponent === 'my planner' ? 
+                        {this.state.openComponent === 'home' ? 
                         <div>
-                            <AddToPlanner
+                            <Post
+                                updateState={this.updateState.bind(this)}
                                 userDetails={this.props.userDetails}/>
-                            <Planner 
-                                date={'1999'}
-                                userDetails={this.props.userDetails} />
-                        </div> 
-                        : ''}
-                        {this.state.openComponent === 'planner date view' ? 
-                            <PlannerDateView
-                                userDetails={this.props.userDetails}/>: ''}
-                        {this.state.openComponent === 'planner date' ? 
-                            <PlannerDate
-                                
-                                userDetails={this.props.userDetails}/>: ''}
+                            <CampaignOverview 
+                                userDetails={this.props.userDetails}/>
+                        </div> : ''}
+                        {this.state.openComponent === 'outreach' ? 
+                            <CampaignCallsMade />: ''}
+                        {this.state.openComponent === 'campaign info' ? 
+                            <div className="col-xs-12 col-sm-8 col-md-7 col-lg-7">
+                                <CampaignInfo />
+                            </div>: ''}
+                        {this.state.openComponent === 'candidate call list' ? 
+                                <CandidateCallList />
+                            : ''}
                     </div>
                     <div className="col-xs-12 col-sm-8 col-md-2 col-lg-2">
                         <div className="right-nav">
-                            RIGHT NAV
+                            <ElectionCountdown />
                         </div>
                     </div >
                 </div>

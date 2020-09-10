@@ -9,7 +9,7 @@ import Avatar from './Avatar'
 export default class loggedinUser extends React.Component {
 
     render() {
-        const {id, fname, lname, email, instName, instCity, instState, profile_pic} = this.props.userDetails
+        const {id, fname, lname, email, campaign, profile_pic} = this.props.userDetails
         return (
             <div className="profile">
                 <div className="card">
@@ -21,13 +21,9 @@ export default class loggedinUser extends React.Component {
                         <div className="profileName">{fname} {lname}</div>
                     </div>
                     <div className="cardMain">
-                        <div className="card-row">
-                            <img className="profileIcons" src={institutionIcon} alt="institution" />
-                            <div className="profileText">{instName}</div>
-                        </div>
                         <div className="card-row">    
                             <img className="profileIcons" src={location} alt="location" />
-                            <div className="profileText">{instCity}</div>
+                            <div className="profileText">{campaign}</div>
                         </div>
                         <div className="card-row">    
                             <img className="profileIcons" src={emailIcon} alt="location" />

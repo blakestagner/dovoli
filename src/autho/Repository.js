@@ -1,6 +1,6 @@
 import axios from 'axios';
-//const BASE_URL = 'http://73.109.125.191:3010';
-const BASE_URL = 'http://localhost:3010';
+const BASE_URL = 'http://73.109.125.191:3010';
+//const BASE_URL = 'http://localhost:3010';
 
 
 export function login (data) {
@@ -130,3 +130,55 @@ export function updateNoteColor(x, y) {
     .then(res => res.data)
     .catch(err => Promise.reject('Request Not Authenticated!'));
     }
+
+//Campign Calls Made
+export function getOutreachCalls() {
+    return axios.get(`${BASE_URL}/api/getOutreachCalls`, {
+        params: {'x-access-token': localStorage.getItem('x-access-token')}
+    })
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}
+
+//Campaign Information
+export function getCampaignDetails() {
+    return axios.get(`${BASE_URL}/api/getCampaignDetails`, {
+        params: {'x-access-token': localStorage.getItem('x-access-token')}
+    })
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}
+//post volunteer calls
+export function postOutreachCalls(data) {
+    return axios.post(`${BASE_URL}/api/postOutreachCalls`, {
+        'x-access-token': localStorage.getItem('x-access-token'),
+        'date': data.date,
+        'called': data.called,
+        'answered': data.answered
+        }
+    )
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}
+//post candidate calls
+export function postCandidateCalls(data) {
+    return axios.post(`${BASE_URL}/api/postCandidateCalls`, {
+        'x-access-token': localStorage.getItem('x-access-token'),
+        'type': data.type,
+        'name': data.name,
+        'number': data.number,
+        'email': data.email,
+        'notes': data.notes
+        }
+    )
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}
+//Get Candidate Call List
+export function getCandidateCallList() {
+    return axios.get(`${BASE_URL}/api/getCandidateCallList`, {
+        params: {'x-access-token': localStorage.getItem('x-access-token')}
+    })
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}

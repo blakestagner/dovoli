@@ -5,7 +5,6 @@ import { login, getUserInfo } from '../autho/Repository'
 import { isAuthenticated } from '../autho/Repository'
 import {TextField } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
 
 export default class UserLogin extends React.Component {
   constructor(props) {
@@ -79,8 +78,8 @@ class LoginBox extends React.Component {
           </div>
             <div className="">
                 <TextField 
-                  fullWidth="true"
-                  required="true"
+                  fullWidth={true}
+                  required={true}
                   id="email" 
                   label="email"
                   name="email"
@@ -89,8 +88,8 @@ class LoginBox extends React.Component {
             </div>
             <div className="">
                 <TextField 
-                fullWidth="true"
-                required="true"
+                  fullWidth={true}
+                  required={true}
                   id="password" 
                   label="password"
                   name="password"

@@ -50,7 +50,7 @@ export default class Toolbar extends React.Component {
                     userDetails={this.props.userDetails} 
                     onClick={this.mobileMenuToggle}/>
                 :
-                <LandingMenu onClick={this.mobileMenuToggle}/>
+                <LandingMenu/>
             }
         </div>
         )
@@ -64,21 +64,28 @@ class LandingMenu extends React.Component {
         }
     }
     render() {
+        window.onscroll = () => {
+            const nav = document.querySelector('#landingNav');
+
+            if(nav === null || undefined) {
+            } else {
+                if(window.scrollY <= 10) {
+                    nav.className = 'navBar'
+                    this.setState({menuIcon: menuWhite})
+                }
+                else {
+                    nav.className = 'navBar scrollBar';
+                    this.setState({menuIcon: menuBlack})
+                    }
+                }; 
+            }
         return (
-            <div className="navBar" id="mainNav">
+            <div className="navBar" id="landingNav">
                 <MobileMenu onClick={this.mobileMenuToggle}/>
                 <div className='navBarContainer'>
-                    <div className='navBarTitle'>
+                    <div style={{margin: 'auto'}}>
                         <h1><Link to="/">dovoli</Link></h1>
                     </div>
-                    <ul id="mainMenuList">
-                        <li className="menuList">
-                            <Link to="/login">Log in</Link>
-                        </li>
-                        <li>
-                            <img id='navManuIcon' alt="menu" src={ this.state.menuIcon } onClick={this.props.onClick} />
-                        </li>
-                    </ul>
                 </div>
             </div>
         )
@@ -111,12 +118,9 @@ class LoggedInMenu extends React.Component {
                     </div>
                     
                     <div className='navBarTitle'>
-                        <h1><Link to="/">dovoli</Link></h1>
+                        <h1><Link to="/home">dovoli</Link></h1>
                     </div>
                     <ul id="mainMenuList"> 
-                        <li className="menuList">
-                            <Link to="/notes">notes</Link>
-                        </li> 
                         <li className="menuList">
                             <Link to="/settings">settings</Link>
                         </li>
@@ -142,7 +146,7 @@ logOut() {
                 <ul className="mobileNavBarList" id="mobileNavBarList" onClick={this.props.onClick}>
                     {( isAuthenticated() ) ?
                         <li>
-                            <Link to="/notes">notes</Link>
+                            <Link to="/home">home</Link>
                         </li> 
                         : ''
                     }

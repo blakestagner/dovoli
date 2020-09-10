@@ -1,25 +1,17 @@
 .heroImg {
   background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5)), url("./img/hero.jpg");
   height: 65vh;
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: relative;
-  clip-path: ellipse(84% 70% at 25% 30%);
-}
-@media only screen and (max-width: 850px) { 
-  .heroImg {
-    background-position: center left;
-  }
-} 
-.loggedinImg {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./img/loggedIn.jpg");
-  height: 20vh;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+  clip-path: ellipse(130% 67% at 100% 31%);
 }
+@media only screen and (max-width: 850px) { 
+  .heroImg {
+    background-position: 31% 15%;;
+  }
+} 
 .heroText {
     text-align: center;
     top: 50%;
