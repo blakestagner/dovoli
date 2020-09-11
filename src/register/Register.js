@@ -119,7 +119,7 @@ class RegisterBox extends React.Component {
 
   submitRegister(e) {
     e.preventDefault();
-    var regMsg = document.getElementById('registrationMessage')
+    
     register(this.state)
     .then(res => res)
     .catch(err => err)

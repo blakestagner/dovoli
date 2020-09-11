@@ -182,3 +182,14 @@ export function getCandidateCallList() {
     .then(res => res.data)
     .catch(err => Promise.reject(err))
 }
+//update contacted status
+export function updateContacted(x, y) {
+    console.log(x, y)
+    return axios.post(`${BASE_URL}/api/updateContacted`, {
+        'x-access-token': localStorage.getItem('x-access-token'),
+        'id': x,
+        'contacted': y
+    })
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}

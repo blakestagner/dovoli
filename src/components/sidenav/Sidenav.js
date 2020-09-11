@@ -23,6 +23,7 @@ export default class SideNav extends React.Component {
                 </li>
                 <li>
                     <a 
+                        
                         name="campaign info" 
                         onClick={this.props.setPlanner}>
                         Campaign Information

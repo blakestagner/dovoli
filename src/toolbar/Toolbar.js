@@ -31,7 +31,6 @@ export default class Toolbar extends React.Component {
         }
     }
     handleClickBeyondSidebar(x, y) {
-        const child = document.querySelector('#mobileNavBarList').childNodes
         if(y.classList.value === 'mmOpen') {
             x.removeEventListener("click", this.mobileMenuToggle)
         } else {

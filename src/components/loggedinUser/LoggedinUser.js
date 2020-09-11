@@ -1,6 +1,4 @@
 import React from 'react';
-import profileImg from '../../img/icons/profile.svg'
-import institutionIcon from '../../img/icons/institutionWhite.svg';
 import location from '../../img/icons/location-white.svg';
 import emailIcon from '../../img/icons/email.svg';
 import user from './user.css'

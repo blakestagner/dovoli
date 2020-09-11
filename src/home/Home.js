@@ -1,7 +1,4 @@
 import React from 'react';
-import AddToPlanner from '../components/planner/AddToPlanner';
-import PlannerDateView from '../components/planner/PlannerDateView';
-import PlannerDate from '../components/planner/PlannerDate'
 import CampaignOverview from './CampaignOverview'
 import Sidenav from '../components/sidenav/Sidenav'
 import Post from './Post'
@@ -25,10 +22,13 @@ export default class Home extends React.Component {
     }
     updateState() {
         this.setState({updateState: 'yes'})
+
     }
     render() {
+
         return (
             <div className="main-container">
+                {this.state.updateState}
                 <div className="row">
                     <div className="col-xs-12 col-sm-4 col-md-3 col-lg-3">
                         <Sidenav 
@@ -42,10 +42,12 @@ export default class Home extends React.Component {
                                 updateState={this.updateState.bind(this)}
                                 userDetails={this.props.userDetails}/>
                             <CampaignOverview 
+                                update={this.state.updateState}
                                 userDetails={this.props.userDetails}/>
                         </div> : ''}
                         {this.state.openComponent === 'outreach' ? 
-                            <CampaignCallsMade />: ''}
+                            <CampaignCallsMade 
+                                update={this.state.updateState}/> : ''}
                         {this.state.openComponent === 'campaign info' ? 
                             <div className="col-xs-12 col-sm-8 col-md-7 col-lg-7">
                                 <CampaignInfo />

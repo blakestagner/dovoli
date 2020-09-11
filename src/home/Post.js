@@ -68,6 +68,7 @@ export default class Post extends React.Component {
                         </Grid>
                         <Grid>
                         <img
+                            alt="phone call"
                             src={phoneCallWhite} 
                             className="post-icon" 
                             onClick={() => this.toggleOverlay('log volunteer calls')}/>
@@ -75,6 +76,7 @@ export default class Post extends React.Component {
                         </Grid>
                         <Grid>
                             <img
+                                alt="phone call back"
                                 src={phoneCallback} 
                                 className="post-icon"
                                 onClick={() => this.toggleOverlay('log candidate calls')}/>
@@ -82,6 +84,7 @@ export default class Post extends React.Component {
                         </Grid>
                         <Grid>
                             <img
+                                alt="flag"
                                 src={flagWhite} 
                                 className="post-icon" />
                                 <span className="tooltip">Yard Sign</span>
@@ -93,7 +96,6 @@ export default class Post extends React.Component {
                             toggle={() => this.toggleOverlay('')}/> : ''}
                     {this.state.openedPost === 'log candidate calls' ? 
                         <PostCandidateCalls 
-                            updateState={this.props.updateState}
                             toggle={() => this.toggleOverlay('')}/> : ''}
                 </div>
             </div>
@@ -102,7 +104,7 @@ export default class Post extends React.Component {
 }
 export const PostVolunteerCalls = (props) => {
     const [postVolCall, setVolCall] = React.useState({
-        date: '',
+        date: '2020-09-01',
         called: '',
         answered: ''
     });
@@ -124,6 +126,7 @@ export const PostVolunteerCalls = (props) => {
         <div className="post-open">
             <div className="planner-inner">
                 <img
+                    alt="toggle close"
                     onClick={props.toggle}
                     src={close} 
                     className="close-icon" 
@@ -216,6 +219,7 @@ export const PostCandidateCalls = (props) => {
         <div className="post-open">
             <div className="planner-inner">
                 <img
+                    alt="toggle"
                     onClick={props.toggle}
                     src={close} 
                     className="close-icon" 

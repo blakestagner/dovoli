@@ -1,5 +1,8 @@
-import React, {useEffect, useState, useRef} from 'react';
-import { getCampaignDetails, getOutreachCalls, getCandidateCallList } from '../../autho/Repository';
+import React, {useEffect, useState} from 'react';
+import { getCampaignDetails, 
+        getOutreachCalls, 
+        getCandidateCallList,
+        updateContacted } from '../../autho/Repository';
 import campaign from './campaign.css'
 import office from '../../img/icons/office-black.svg';
 import location from '../../img/icons/location.svg';
@@ -9,6 +12,14 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import phone from '../../img/icons/phone.svg';
+import email from '../../img/icons/email_black.svg';
+import note from '../../img/icons/note.svg';
 
 
 export function CampaignInfo() {
@@ -20,7 +31,8 @@ export function CampaignInfo() {
         }, []
     )
     return (
-        <div className="profile">
+        <Grid container item xs={12}>
+            <Grid item xs={12} md={12} lg={12}>
             {campaign.map(campaign => (
                 <div className="card" key={campaign.id}>
                     <div className="cardHeader">
@@ -30,20 +42,21 @@ export function CampaignInfo() {
                     <div className="cardMain">
                         <div className="card-row">   
                             <img className="campaign-icons" src={office} alt="location" />                        
-                            <div className="campaign-text">
+                            <div className="icon-text-center">
                                 {campaign.race}
                             </div>
                         </div> 
                         <div className="card-row">   
                             <img className="campaign-icons" src={location} alt="location" />                        
-                            <div className="campaign-text">
+                            <div className="icon-text-center">
                                 {campaign.zipcode} {campaign.state}
                             </div>
                         </div> 
                     </div>
                 </div>
             ))}
-        </div>
+            </Grid>
+        </Grid>
     )
 }
 
@@ -91,7 +104,7 @@ export function CampaignCallsMade() {
         <div>
             <h1>Volunteer Calls Made</h1>
             <Grid container item xs={12}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6} >
                 <div className="card">
                     <div className="cardHeader">
                         <img src={phoneCalled} className="card-header-icon" alt="phone called"/>
@@ -122,19 +135,25 @@ export function CampaignCallsMade() {
     )
 }
 
-export function CallsMadeList() {
+export function CallsMadeList(props) {
     const [callsMade, setCallsMade] = useState([])
     const [load, loadMore] = useState(4)
     const [sortList, setSortList] = useState({
         sort: 'all'
     })
 
-    useEffect(() => {
+    useEffect((props) => {
+        getOutreachCalls()
+            .then(res => setCallsMade(res.reverse()))
+            .then(console.log('1'))
+            .catch(err => console.log(err))
+        }, [props.update]
+    )
+    const updateState = () => {
         getOutreachCalls()
             .then(res => setCallsMade(res.reverse()))
             .catch(err => console.log(err))
-        }, []
-    )
+    }
     const handleChange = (event) => {
         const name = event.target.name;
         setSortList({
@@ -149,6 +168,36 @@ export function CallsMadeList() {
         var day = d.toLocaleString().split('/')[1]
         var lastWeek = `${d.toLocaleString().split('/')[2].split(',')[0]}-${month < 10 ? `0${month}` : month }-${day < 10 ? `0${day}` : day} `
         return lastWeek
+    }
+    const getMonthName = (e) => {
+        switch(e) {
+            case '01':
+                return 'Jan';
+            case '02':
+                return 'Feb';
+            case '03':
+                return 'Mar';
+            case '04':
+                return 'Apr';
+            case '05':
+                return 'May';
+            case '06':
+                return 'Jun';
+            case '07':
+                return 'Jul';
+            case '08':
+                return 'Aug';
+            case '09':
+                return 'Sept';
+            case '10':
+                return 'Oct';
+            case '11':
+                return 'Nov';
+            case '12':
+                return 'Dec';
+            default:  
+                return 'Null';
+        }
     }
 
     const useStyles = makeStyles((theme) => ({
@@ -182,10 +231,10 @@ export function CallsMadeList() {
             {sortList.sort === 'all' ? 
                 <Grid container item xs={12}>
                 {callsMade.reverse().slice(0, load).map(calls => (
-                    <Grid item xs={12} md={6} key={calls.id}>
+                    <Grid item xs={12} md={6} lg={3} key={calls.id}>
                         <div key={calls.id} className="card">
                             <div className="card-date">
-                                {calls.date.split('T')[0]}
+                                {`${getMonthName(calls.date.split('-')[1])}-${calls.date.split('-')[2].split('T')[0]}-${calls.date.split('-')[0]}`}
                             </div>
                             <div className="card-main">
                                 <div className="row campaign-text">
@@ -210,10 +259,10 @@ export function CallsMadeList() {
                 : 
                 <Grid container item xs={12}>
                 {callsMade.filter(calls => calls.date > CallsLastWeek()).map(calls => (
-                    <Grid item xs={12} md={6} key={calls.id}>
+                    <Grid item xs={12} md={6} lg={3} key={calls.id}>
                         <div key={calls.id} className="card">
                             <div className="card-date">
-                                {calls.date.split('T')[0]}
+                            {`${getMonthName(calls.date.split('-')[1])}-${calls.date.split('-')[2].split('T')[0]}-${calls.date.split('-')[0]}`}
                             </div>
                             <div className="card-main">
                                 <div className="row campaign-text">
@@ -238,8 +287,6 @@ export function Dem() {
         </div>
     )
 }
-
-
 export function Rep() {
     return (
         <div className="rep">
@@ -247,21 +294,23 @@ export function Rep() {
         </div>
     )
 }
-
-
 export function CandidateCallList() {
     const [callList, setCallList] = useState([])
     const [sortList, setSortList] = useState({
-        sort: 0
+        sort: 0,
+        type: 'doner',
     })
-
     useEffect(() => {
         getCandidateCallList()
             .then(res => setCallList(res.reverse()))
             .catch(err => console.log(err))
         }, []
     )
-
+    const updateState = () => {
+        getCandidateCallList()
+            .then(res => setCallList(res.reverse()))
+            .catch(err => console.log(err))
+    }
     const handleChange = (event) => {
         const name = event.target.name;
         setSortList({
@@ -269,22 +318,40 @@ export function CandidateCallList() {
           [name]: event.target.value
         })
       };
-
-      const useStyles = makeStyles((theme) => ({
-        formControl: {
-            margin: theme.spacing(1),
-            minWidth: 120,
+    const changeContactStatus = (id, contacted) => {
+        (contacted != 1 ? contacted = 1 : contacted = 0)
+        updateContacted(id, contacted)
+            .then(updateState)
+            .catch(err => console.log(err))
+    }
+    const useStyles = makeStyles((theme) => ({
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+    },
+    root: {
+        width: "100%"
         },
-            selectEmpty: {
-                marginTop: theme.spacing(2),
-            },
-        }));
-        const classes = useStyles();
+    heading: {
+        fontSize: theme.typography.pxToRem(15),
+        flexBasis: '33.33%',
+        flexShrink: 0,
+        textAlign: 'left'
+        },
+    secondaryHeading: {
+        fontSize: theme.typography.pxToRem(15),
+        color: theme.palette.text.secondary,
+        },
+    }));
+    const classes = useStyles();
     return (
         <div>
             <h1>Candidate Will Call List</h1>
             <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-native-simple">List</InputLabel>
+                <InputLabel htmlFor="age-native-simple">contact status</InputLabel>
                 <Select
                     native
                     value={sortList.sort}
@@ -293,24 +360,78 @@ export function CandidateCallList() {
                         name: 'sort'
                     }}
                 >
-                    <option aria-label="None" value="" />
                     <option value={0}>not contacted</option>
                     <option value={1}>contacted</option>
                 </Select>
             </FormControl>
-            <Grid container item xs={12}>
-                <div className="card col-xs-12 col-sm-12 col-md-12 col-lg-12"> 
-                    <div className="cardMain">
-                    {callList.filter(calls => calls.contacted == sortList.sort ).map(calls => (
-                        <Grid item key={calls.id} lg={12}>
-                            <div className="row campaign-text">
-                                {calls.name} - {calls.number} - {calls.type}
+            <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="age-native-simple">type</InputLabel>
+                <Select
+                    native
+                    value={sortList.type}
+                    onChange={handleChange}
+                    inputProps={{
+                        name: 'type'
+                    }}
+                >
+                    <option value={'doner'}>doner</option>
+                    <option value={'voter follow up'}>follow up</option>
+                    <option value={'yard sign'}>yard sign</option>
+                </Select>
+            </FormControl>
+            
+            <div className={classes.root}>
+                {callList.filter(calls => calls.contacted == sortList.sort && calls.type === sortList.type ).map(calls => (
+                    <Accordion key={calls.id}>
+                        <AccordionSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls={calls.id}
+                            id={calls.id}
+                            >
+                            <Typography className={classes.heading}>{calls.name}</Typography>
+                            <Typography className={classes.secondaryHeading}>{calls.type}</Typography>
+                        </AccordionSummary>
+                        
+                        <AccordionDetails>
+                        <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div className="cardMain">
+                                <div className="card-row">   
+                                    <img className="campaign-icons" src={phone} alt="phone" />                        
+                                    <div className="icon-text-center">
+                                        {calls.number}
+                                    </div>
+                                </div> 
+                                <div className="card-row">   
+                                    <img className="campaign-icons" src={email} alt="phone" />                        
+                                    <div className="icon-text-center">
+                                        {calls.email}
+                                    </div>
+                                </div> 
+                                <div className="card-row">   
+                                    <img className="campaign-icons" src={note} alt="phone" />                        
+                                    <div className="icon-text-center">
+                                        {calls.notes}
+                                    </div>
+                                </div> 
                             </div>
-                        </Grid>
-                    ))}
-                    </div>
-                </div>
-            </Grid>
+                        </div>
+                        <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div className="cardMain">
+                            <button 
+                                type="button" 
+                                className="load-btn" 
+                                onClick={() => changeContactStatus(calls.id, calls.contacted)}> 
+                                contacted 
+                            </button>
+                            </div>
+                        </div>
+                        </AccordionDetails>
+                    </Accordion>
+                   
+                ))}
+                {callList.filter(calls => calls.contacted == sortList.sort && calls.type === sortList.type) != 0 ?
+                '' : 'there is no one to reach out to with the selected parameters' }
+            </div>
         </div>
     )
 }

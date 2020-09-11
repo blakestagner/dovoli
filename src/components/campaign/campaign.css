@@ -42,3 +42,8 @@
 #countdown {
     font-weight: bold;
 }
+.icon-text-center {
+    display: flex;
+    align-items: center;
+    color: #444;
+}

@@ -21,6 +21,7 @@
     flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
+    height: inherit;
   }
   .navBarTitle {
     margin-left: 25px;
@@ -105,14 +106,14 @@
   position: fixed;
   width: 100vw;
   z-index: 30;
-  height: 85px;
+  height: 70px;
 }
 .navBarLI ul {
-  flex-direction: row;
   display: flex;
-  flex-basis: auto;
-  margin-left: auto;
   padding-right: 25px;
+  height: 70px;
+  margin: 0 0 0 auto;
+  align-items: center;
 }
 .navBarLI ul li {
   display: flex;
@@ -127,5 +128,6 @@
   text-decoration: none;
 }
 .toolbar-avatar {
-  margin-left: 10px;
+  margin: auto 10px;
+  height: 60px;
 }
