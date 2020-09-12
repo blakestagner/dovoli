@@ -47,3 +47,13 @@
     align-items: center;
     color: #444;
 }
+.staff-details {
+    margin-top: 8px;
+    text-align: left;
+    display: flex;
+    flex-flow: column;
+    height: 60px;
+}
+.staff-details p {
+    margin: 0;
+}

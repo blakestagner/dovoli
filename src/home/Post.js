@@ -13,7 +13,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-
+import todo from '../img/icons/todo.svg';
 
 
 export default class Post extends React.Component {
@@ -69,6 +69,14 @@ export default class Post extends React.Component {
                         <Grid>
                         <img
                             alt="phone call"
+                            src={todo} 
+                            className="post-icon" 
+                            onClick={() => this.toggleOverlay('log volunteer calls')}/>
+                            <span className="tooltip">candidate to do</span>
+                        </Grid>
+                        <Grid>
+                        <img
+                            alt="phone call"
                             src={phoneCallWhite} 
                             className="post-icon" 
                             onClick={() => this.toggleOverlay('log volunteer calls')}/>
@@ -96,6 +104,7 @@ export default class Post extends React.Component {
                             toggle={() => this.toggleOverlay('')}/> : ''}
                     {this.state.openedPost === 'log candidate calls' ? 
                         <PostCandidateCalls 
+                            updateState={this.props.updateState}
                             toggle={() => this.toggleOverlay('')}/> : ''}
                 </div>
             </div>

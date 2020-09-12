@@ -2,7 +2,10 @@ import React, {useEffect, useState} from 'react';
 import { getCampaignDetails, 
         getOutreachCalls, 
         getCandidateCallList,
-        updateContacted } from '../../autho/Repository';
+        updateContacted,
+        getCampaignStaff,
+        getTodo,
+        updateTodoCompleted } from '../../autho/Repository';
 import campaign from './campaign.css'
 import office from '../../img/icons/office-black.svg';
 import location from '../../img/icons/location.svg';
@@ -20,6 +23,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import phone from '../../img/icons/phone.svg';
 import email from '../../img/icons/email_black.svg';
 import note from '../../img/icons/note.svg';
+import Avatar from '../loggedinUser/Avatar'
 
 
 export function CampaignInfo() {
@@ -60,14 +64,53 @@ export function CampaignInfo() {
     )
 }
 
-export function CampaignCallsMade() {
+export function CampaignStaff() {
+    const [staff, setStaff] = useState([])
+
+    useEffect(() => {
+        getCampaignStaff()
+            .then(res => setStaff(res))
+            .catch(err => console.log(err))
+        }, []
+    )
+    return (
+        <div>
+            <h1>Campaign Staff</h1>
+            {staff.map(staff => (
+                <div key={staff.id}>
+                    <div className="cardMain">
+                        <div className="card-row">
+                        <Avatar
+                            hasProfileImg={staff.profile_pic} 
+                            userData={
+                                staff.id+
+                                staff.fname+
+                                staff.lname
+                            }
+                            />
+                            <div className="staff-details">
+                                <p>{staff.fname} {staff.lname}</p>
+                                <p style={{color: '#444'}}>{staff.position}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+export const CampaignCallsMade = React.forwardRef((props, ref) => {
     const [callsMade, setCallsMade] = useState([])
+    const callsListRef = React.useRef()
+
     useEffect(() => {
         getOutreachCalls()
             .then(res => setCallsMade(res))
             .catch(err => console.log(err))
         }, []
     )
+    
     const TotalCalls = () => {
         let totalCalls = 0;
         let callsReached = 0;
@@ -99,8 +142,18 @@ export function CampaignCallsMade() {
                 <p>answered: {callsReached}</p>
             </div>
     }
+    React.useImperativeHandle(ref, () => ({
+        updateState(){
+            getOutreachCalls()
+                .then(res => setCallsMade(res))
+                .then(() => callsListRef.current.updateState())
 
+                .catch(err => console.log(err))
+            }
+        } 
+    ));
     return (
+
         <div>
             <h1>Volunteer Calls Made</h1>
             <Grid container item xs={12}>
@@ -128,32 +181,27 @@ export function CampaignCallsMade() {
                 </Grid>
             </Grid>
             <hr className="hr" />
-            <CallsMadeList />
+            <CallsMadeList ref={callsListRef} />
             <hr className="hr" />
             <CandidateCallList />
         </div>
+        
     )
-}
+  });
 
-export function CallsMadeList(props) {
+export const CallsMadeList = React.forwardRef((props, ref) => {
     const [callsMade, setCallsMade] = useState([])
     const [load, loadMore] = useState(4)
     const [sortList, setSortList] = useState({
         sort: 'all'
     })
 
-    useEffect((props) => {
+    useEffect(() => {
         getOutreachCalls()
             .then(res => setCallsMade(res.reverse()))
-            .then(console.log('1'))
             .catch(err => console.log(err))
-        }, [props.update]
+        }, []
     )
-    const updateState = () => {
-        getOutreachCalls()
-            .then(res => setCallsMade(res.reverse()))
-            .catch(err => console.log(err))
-    }
     const handleChange = (event) => {
         const name = event.target.name;
         setSortList({
@@ -198,8 +246,7 @@ export function CallsMadeList(props) {
             default:  
                 return 'Null';
         }
-    }
-
+    }    
     const useStyles = makeStyles((theme) => ({
         formControl: {
             margin: theme.spacing(1),
@@ -209,7 +256,17 @@ export function CallsMadeList(props) {
                 marginTop: theme.spacing(2),
             },
         }));
+
     const classes = useStyles();
+
+    React.useImperativeHandle(ref, () => ({
+        updateState(){
+            getOutreachCalls()
+                .then(res => setCallsMade(res.reverse()))
+                .catch(err => console.log(err))
+            }
+        } 
+    ));
     return (
         <div>
             <h1>Volunteer Calls List</h1>
@@ -277,7 +334,7 @@ export function CallsMadeList(props) {
                 }
         </div>
     )
-}
+})
 
 
 export function Dem() {
@@ -436,6 +493,125 @@ export function CandidateCallList() {
     )
 }
 
+
+export const CandidateTodo = React.forwardRef((props, ref) => {
+    const [todoList, setTodoList] = React.useState([])
+    const [sortTodo, setSortTodo] = React.useState({
+        completed: 0
+    })
+
+    React.useImperativeHandle(ref, () => ({
+        updateState(){
+            console.log('updated')
+            }
+        } 
+    ));
+    
+    useEffect(() => {
+        getTodo()
+            .then(res => setTodoList(res))
+            .catch(err => console.log(err))
+        }, []
+    )
+
+    const handleChange = (event) => {
+        const name = event.target.name;
+        setSortTodo({
+          ...sortTodo,
+          [name]: event.target.value
+        })
+      };
+    const updateState = () => {
+        getTodo()
+        .then(res => setTodoList(res))
+        .catch(err => console.log(err))
+    }
+    const updateTodoList = (id, completed) => {
+        (completed != 1 ? completed = 1 : completed = 0)
+        const date = new Date()
+        console.log(date)
+        updateTodoCompleted(id, completed, date) 
+            .then(updateState)
+            .catch(err => console.log(err))
+    }
+
+    const useStyles = makeStyles((theme) => ({
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 120,
+        },
+        selectEmpty: {
+            marginTop: theme.spacing(2),
+        },
+        root: {
+            width: "100%"
+            },
+        heading: {
+            fontSize: theme.typography.pxToRem(15),
+            flexBasis: '33.33%',
+            flexShrink: 0,
+            textAlign: 'left'
+            },
+        secondaryHeading: {
+            fontSize: theme.typography.pxToRem(15),
+            color: theme.palette.text.secondary,
+            },
+        }));
+        const classes = useStyles();
+    return (
+        <div>
+            <h1>Candidate to do List</h1>
+            <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="age-native-simple">completed</InputLabel>
+                <Select
+                    native
+                    value={sortTodo.type}
+                    onChange={handleChange}
+                    inputProps={{
+                        name: 'completed'
+                    }}
+                >
+                    <option value={0}>incomplete</option>
+                    <option value={1}>completed</option>
+                </Select>
+            </FormControl>
+            <div className={classes.root}>
+            {todoList.filter(todo => todo.completed == sortTodo.completed).map(todo => (
+            <Accordion key={todo.id + 875}>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls={todo.id}
+                    id={todo.id}
+                    >
+                    <Typography className={classes.heading}>{todo.title}</Typography>
+                    <Typography className={classes.secondaryHeading}>{todo.completed_time.split('T')[0]}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div className="cardMain">
+                        <div className="card-row"> 
+                            {todo.content}
+                        </div>
+                    </div>
+                </div>
+                <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <div className="cardMain">
+                    <button 
+                        type="button" 
+                        className="load-btn"
+                        onClick={() => updateTodoList(todo.id, todo.completed)} 
+                        > 
+                        contacted 
+                    </button>
+                    </div>
+                </div>
+                </AccordionDetails>
+            </Accordion>
+            ))}
+            </div>
+        </div>
+    )
+})
 
 
 export function ElectionCountdown() {

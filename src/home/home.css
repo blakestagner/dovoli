@@ -26,6 +26,7 @@
     width: fit-content;
     padding: 5px 0;
     height: 40px;
+    margin-bottom: 20px;
     /*border-top: 3px #D3D3D3 solid;
     border-right: 3px #D3D3D3  solid;
     border-bottom: 3px #D3D3D3  solid;
@@ -292,7 +293,7 @@
     box-shadow: 9px 9px 16px rgba(163, 177, 198, 0.6), -9px -9px 16px rgba(255, 255, 255, 0.5);
     display: flex;
     padding: 5px;
-    margin: 0 20px 0;
+    margin: 0 10px 0;
 }
 .post-icon + .tooltip {
     visibility: hidden;

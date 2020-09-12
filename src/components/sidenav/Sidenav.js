@@ -29,7 +29,13 @@ export default class SideNav extends React.Component {
                         Campaign Information
                     </a>
                 </li>
-                
+                <li>
+                    <a 
+                        name="candidate todo list" 
+                        onClick={this.props.setPlanner}>
+                        Candidate Todo List
+                    </a>
+                </li>
                 <li>
                     <a 
                         name="candidate call list" 

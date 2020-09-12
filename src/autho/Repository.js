@@ -1,6 +1,7 @@
+import { getDisplayDate } from '@material-ui/pickers/_helpers/text-field-helper';
 import axios from 'axios';
-const BASE_URL = 'http://73.109.125.191:3010';
-//const BASE_URL = 'http://localhost:3010';
+//const BASE_URL = 'http://73.109.125.191:3010';
+const BASE_URL = 'http://localhost:3010';
 
 
 export function login (data) {
@@ -189,6 +190,30 @@ export function updateContacted(x, y) {
         'x-access-token': localStorage.getItem('x-access-token'),
         'id': x,
         'contacted': y
+    })
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}
+export function getCampaignStaff() {    
+    return axios.get(`${BASE_URL}/api/getCampaignStaff`, {
+        params: {'x-access-token': localStorage.getItem('x-access-token')}
+    })
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}
+export function getTodo() {    
+    return axios.get(`${BASE_URL}/api/getTodo`, {
+        params: {'x-access-token': localStorage.getItem('x-access-token')}
+    })
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}
+export function updateTodoCompleted(x, y, z) {
+    return axios.post(`${BASE_URL}/api/updateTodoCompleted`, {
+        'x-access-token': localStorage.getItem('x-access-token'),
+        'id': x,
+        'contacted': y,
+        'completed_time': z
     })
     .then(res => res.data)
     .catch(err => Promise.reject(err))
