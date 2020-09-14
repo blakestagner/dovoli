@@ -406,7 +406,11 @@ export const PostYardsign = (props) => {
     }
     const getLocation = () => {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(setPosition, showError)
+            navigator.geolocation.getCurrentPosition(setPosition, showError, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0  
+            })
           } else { 
             console.log("Geolocation is not supported by this browser.");
           }
@@ -434,7 +438,7 @@ export const PostYardsign = (props) => {
     const showPosition = () => {
         if(yardSign.latitude != '' && yardSign.longitude != '') {
             const img_url = `https://maps.googleapis.com/maps/api/staticmap?center=
-            "+${yardSign.latitude},${yardSign.longitude}+"&zoom=14&size=400x300&sensor=false&key=AIzaSyAxt6W7r3stRUeVq365nooP3N0ihNEfZfo`;
+            "+${yardSign.latitude},${yardSign.longitude}+"&zoom=14&size=400x300&sensor=false&enableHighAccuracy=true&key=AIzaSyAxt6W7r3stRUeVq365nooP3N0ihNEfZfo`;
             return ( <img style={{width: '100%'}}src={img_url} /> )
         } else { return '' }
     }
@@ -462,7 +466,9 @@ export const PostYardsign = (props) => {
                     </Grid>
                 </div>
                 <div className="row align-left">
-                    <Grid container item xs={12}>
+                    <Grid container item xs={12} 
+                        justify="center"
+                        alignItems="center">
                         <Grid item>
                             {showPosition()}
                             <p style={{color: 'red', fontSize: '12px', marginTop: '5px'}} 
