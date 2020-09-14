@@ -408,14 +408,17 @@ export const PostYardsign = (props) => {
     
     const getLocation = () => {
         if (navigator.geolocation) {
-            navigator.permissions.query({name:'geolocation'}).then(
-            navigator.geolocation.getCurrentPosition(setPosition, showError, {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0  
-
-            }))
-            .catch(console.log('You must allow location permissions'))
+            navigator.geolocation.getCurrentPosition(success => {
+                navigator.geolocation.getCurrentPosition(setPosition, showError, {
+                    enableHighAccuracy: true,
+                    timeout: 5000,
+                    maximumAge: 0  
+                })
+              }, failure => {
+                if (failure.message.startsWith("Only secure origins are allowed")) {
+                    alert('location not supported on unsecured origin')
+                }
+              });
           } else { 
             console.log("Geolocation is not supported by this browser.");
           }
