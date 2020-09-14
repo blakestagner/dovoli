@@ -1,7 +1,10 @@
 import React from 'react'
 import home from './home.css';
 import {  TextField } from '@material-ui/core';
-import { postOutreachCalls, postCandidateCalls } from '../autho/Repository'
+import { postOutreachCalls, 
+        postCandidateCalls, 
+        postTodoItem, 
+        postYardsignLocation } from '../autho/Repository'
 import Button from '@material-ui/core/Button';
 import Avatar from '../components/loggedinUser/Avatar';
 import close from '../img/icons/close.png';
@@ -71,7 +74,7 @@ export default class Post extends React.Component {
                             alt="phone call"
                             src={todo} 
                             className="post-icon" 
-                            onClick={() => this.toggleOverlay('log volunteer calls')}/>
+                            onClick={() => this.toggleOverlay('log todo')}/>
                             <span className="tooltip">candidate to do</span>
                         </Grid>
                         <Grid>
@@ -94,10 +97,15 @@ export default class Post extends React.Component {
                             <img
                                 alt="flag"
                                 src={flagWhite} 
-                                className="post-icon" />
+                                className="post-icon" 
+                                onClick={() => this.toggleOverlay('log yardsign')}/>
                                 <span className="tooltip">Yard Sign</span>
                         </Grid>
                     </Grid>
+                    {this.state.openedPost === 'log todo' ? 
+                        <PostTodo 
+                            updateState={this.props.updateTodo}
+                            toggle={() => this.toggleOverlay('')}/> : ''}
                     {this.state.openedPost === 'log volunteer calls' ? 
                         <PostVolunteerCalls 
                             updateState={this.props.updateState}
@@ -106,10 +114,85 @@ export default class Post extends React.Component {
                         <PostCandidateCalls 
                             updateState={this.props.updateState}
                             toggle={() => this.toggleOverlay('')}/> : ''}
+                    {this.state.openedPost === 'log yardsign' ? 
+                        <PostYardsign 
+                            
+                            toggle={() => this.toggleOverlay('')}/> : ''}
                 </div>
             </div>
         )
     }
+}
+export const PostTodo = (props) => {
+    const [postTodo, setTodo] = React.useState({
+        title: '',
+        content: ''
+    });
+    const handleChange = (event) => {
+      setTodo({...postTodo, [event.target.name]: event.target.value});
+    };
+    const submitTodo = () => {
+        postTodoItem(postTodo)
+        .then(res => {
+            props.updateState()
+            props.toggle()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+    return (
+        <div className="post-open">
+            <div className="planner-inner">
+                <img
+                    alt="toggle close"
+                    onClick={props.toggle}
+                    src={close} 
+                    className="close-icon" 
+                    /><h1>post a todo item</h1>    
+                <div className="row align-left space-under">
+                    <Grid container item xs={12} spacing={5}>
+                        <Grid item>
+                            <TextField 
+                                id="title" 
+                                label="title" 
+                                name="title"
+                                onChange={handleChange}
+                                />
+                        </Grid>
+                    </Grid>
+                </div>
+                <div className="row space-under">
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="content"
+                        name="content"
+                        multiline
+                        rows={5}
+                        fullWidth
+                        defaultValue=""
+                        variant="outlined"
+                        onChange={handleChange}
+                        />
+                </div>
+                <div className="row align-left space-under">
+                    <Grid container item xs={12} spacing={5}>
+                        <Grid item>
+                            <Button 
+                                variant="contained"
+                                color="primary"
+                                size="medium"
+                                onClick={ submitTodo }
+                                >
+                                post todo
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    
+                </div>
+            </div>      
+        </div>
+    )
 }
 export const PostVolunteerCalls = (props) => {
     const [postVolCall, setVolCall] = React.useState({
@@ -306,6 +389,102 @@ export const PostCandidateCalls = (props) => {
                             </Button>
                         </Grid>
                     </Grid>
+                </div>
+            </div>      
+        </div>
+    )
+}
+export const PostYardsign = (props) => {
+    const [yardSign, setYardsign] = React.useState({
+        latitude: '',
+        longitude: ''
+    });
+    const submitYardsign = () => {
+        postYardsignLocation(yardSign)
+            .then(props.toggle())
+            .catch(err => console.log(err))
+    }
+    const getLocation = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(setPosition, showError)
+          } else { 
+            console.log("Geolocation is not supported by this browser.");
+          }
+    }
+    const showError = (error) => {
+        const x  = document.getElementById('locationError')
+        switch(error.code) {
+            case error.PERMISSION_DENIED:
+                x.innerHTML = "User denied the request for Geolocation."
+                break;
+            case error.POSITION_UNAVAILABLE:
+                x.innerHTML = "Location information is unavailable."
+                break;
+            case error.TIMEOUT:
+                x.innerHTML = "The request to get user location timed out."
+                break;
+            case error.UNKNOWN_ERROR:
+                x.innerHTML = "An unknown error occurred."
+                break;
+        }
+      }
+    const setPosition = (position) => {
+        setYardsign({latitude: position.coords.latitude, longitude: position.coords.longitude })
+    }
+    const showPosition = () => {
+        if(yardSign.latitude != '' && yardSign.longitude != '') {
+            const img_url = `https://maps.googleapis.com/maps/api/staticmap?center=
+            "+${yardSign.latitude},${yardSign.longitude}+"&zoom=14&size=400x300&sensor=false&key=AIzaSyAxt6W7r3stRUeVq365nooP3N0ihNEfZfo`;
+            return ( <img style={{width: '100%'}}src={img_url} /> )
+        } else { return '' }
+    }
+    return (
+        <div className="post-open">
+            <div className="planner-inner">
+                <img
+                    alt="toggle close"
+                    onClick={props.toggle}
+                    src={close} 
+                    className="close-icon" 
+                    /><h1>post yard sign location</h1>    
+                <div className="row align-left space-under">
+                    <Grid container item xs={12} spacing={5}>
+                        <Grid item>
+                            <Button 
+                                variant="contained"
+                                color="primary"
+                                size="medium"
+                                onClick={ getLocation }
+                                >
+                                Get location
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </div>
+                <div className="row align-left">
+                    <Grid container item xs={12}>
+                        <Grid item>
+                            {showPosition()}
+                            <p style={{color: 'red', fontSize: '12px', marginTop: '5px'}} 
+                                id="locationError"></p>
+                        </Grid>
+                    </Grid>
+                </div>
+                <div className="row align-left space-under">
+                    <hr className="hr" />
+                    <Grid container item xs={12} spacing={5}>
+                        <Grid item>
+                            <Button 
+                                variant="contained"
+                                color="primary"
+                                size="medium"
+                                onClick={ submitYardsign }
+                                >
+                                post yard sign
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    
                 </div>
             </div>      
         </div>

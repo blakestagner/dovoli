@@ -502,14 +502,16 @@ export const CandidateTodo = React.forwardRef((props, ref) => {
 
     React.useImperativeHandle(ref, () => ({
         updateState(){
-            console.log('updated')
+            getTodo()
+                .then(res => setTodoList(res))
+                .catch(err => console.log(err))
             }
         } 
     ));
     
     useEffect(() => {
         getTodo()
-            .then(res => setTodoList(res))
+            .then(res => setTodoList(res.reverse()))
             .catch(err => console.log(err))
         }, []
     )
@@ -534,7 +536,36 @@ export const CandidateTodo = React.forwardRef((props, ref) => {
             .then(updateState)
             .catch(err => console.log(err))
     }
-
+    const getMonthName = (e) => {
+        switch(e) {
+            case '01':
+                return 'Jan';
+            case '02':
+                return 'Feb';
+            case '03':
+                return 'Mar';
+            case '04':
+                return 'Apr';
+            case '05':
+                return 'May';
+            case '06':
+                return 'Jun';
+            case '07':
+                return 'Jul';
+            case '08':
+                return 'Aug';
+            case '09':
+                return 'Sept';
+            case '10':
+                return 'Oct';
+            case '11':
+                return 'Nov';
+            case '12':
+                return 'Dec';
+            default:  
+                return 'Null';
+        }
+    }
     const useStyles = makeStyles((theme) => ({
         formControl: {
             margin: theme.spacing(1),
@@ -584,7 +615,8 @@ export const CandidateTodo = React.forwardRef((props, ref) => {
                     id={todo.id}
                     >
                     <Typography className={classes.heading}>{todo.title}</Typography>
-                    <Typography className={classes.secondaryHeading}>{todo.completed_time.split('T')[0]}</Typography>
+                    <Typography className={classes.secondaryHeading}>
+                        {`${getMonthName(todo.created.split('-')[1])}-${todo.created.split('-')[2].split('T')[0]}-${todo.created.split('-')[0]}`}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                 <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">

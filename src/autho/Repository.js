@@ -194,6 +194,7 @@ export function updateContacted(x, y) {
     .then(res => res.data)
     .catch(err => Promise.reject(err))
 }
+//get campaign staff list
 export function getCampaignStaff() {    
     return axios.get(`${BASE_URL}/api/getCampaignStaff`, {
         params: {'x-access-token': localStorage.getItem('x-access-token')}
@@ -201,6 +202,7 @@ export function getCampaignStaff() {
     .then(res => res.data)
     .catch(err => Promise.reject(err))
 }
+// get candidate to do list
 export function getTodo() {    
     return axios.get(`${BASE_URL}/api/getTodo`, {
         params: {'x-access-token': localStorage.getItem('x-access-token')}
@@ -208,12 +210,33 @@ export function getTodo() {
     .then(res => res.data)
     .catch(err => Promise.reject(err))
 }
+//update todo status
 export function updateTodoCompleted(x, y, z) {
     return axios.post(`${BASE_URL}/api/updateTodoCompleted`, {
         'x-access-token': localStorage.getItem('x-access-token'),
         'id': x,
         'contacted': y,
         'completed_time': z
+    })
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}
+//post a todo
+export function postTodoItem(data) {
+    return axios.post(`${BASE_URL}/api/postTodo`, {
+        'x-access-token': localStorage.getItem('x-access-token'),
+        'title': data.title,
+        'content': data.content
+    })
+    .then(res => res.data)
+    .catch(err => Promise.reject(err))
+}
+//post yard sign
+export function postYardsignLocation(data) {
+    return axios.post(`${BASE_URL}/api/postYardsign`, {
+        'x-access-token': localStorage.getItem('x-access-token'),
+        'latitude': data.latitude,
+        'longitude': data.longitude,
     })
     .then(res => res.data)
     .catch(err => Promise.reject(err))

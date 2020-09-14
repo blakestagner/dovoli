@@ -15,12 +15,16 @@ const Home = (props) => {
         updateState: ''
     })
     const callsMadeRef = React.useRef();
+    const todoRef = React.useRef();
 
     const setComponent = (e) => {
        setHomeState({...homeState, openComponent: e.target.name})
     }
     const updateState = () => {
         callsMadeRef.current.updateState()
+    }
+    const updateTodoState = () => {
+        todoRef.current.updateState()
     }
     return (
         <div className="main-container">
@@ -35,17 +39,18 @@ const Home = (props) => {
                     {homeState.openComponent === 'home' ? 
                     <div>
                         <Post
+                            updateTodo={updateTodoState.bind(this)}
                             updateState={updateState.bind(this)}
                             userDetails={props.userDetails}/>
                         <CampaignInfo userDetails={props.userDetails} />
-                        <hr className="hr" />
-                        <CampaignStaff />
                         <hr className="hr" />
                         <CampaignCallsMade
                             ref={callsMadeRef}
                             userDetails={props.userDetails} />
                         <hr className="hr" />
-                        <CandidateTodo userDetails={props.userDetails}/>
+                        <CandidateTodo 
+                            ref={todoRef}
+                            userDetails={props.userDetails}/>
                     </div> : ''}
                     {homeState.openComponent === 'outreach' ? 
                         <CampaignCallsMade 
