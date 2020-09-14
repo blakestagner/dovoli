@@ -404,13 +404,18 @@ export const PostYardsign = (props) => {
             .then(props.toggle())
             .catch(err => console.log(err))
     }
+
+    
     const getLocation = () => {
         if (navigator.geolocation) {
+            navigator.permissions.query({name:'geolocation'}).then(
             navigator.geolocation.getCurrentPosition(setPosition, showError, {
                 enableHighAccuracy: true,
                 timeout: 5000,
                 maximumAge: 0  
-            })
+
+            }))
+            .catch(console.log('You must allow location permissions'))
           } else { 
             console.log("Geolocation is not supported by this browser.");
           }
