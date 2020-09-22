@@ -1,28 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './toolbar.css';
-import { isAuthenticated} from '../autho/Repository';
+import { isAuthenticated,
+    getCampaignDetails, 
+    getOutreachCalls, 
+    getCandidateCallList,
+    getCampaignStaff,
+    getTodo,
+    logOutTime,
+    notificationRead} from '../autho/Repository';
 import menuBlack from './img/menu-black.svg';
 import menuWhite from './img/menu-white.svg';
 import Avatar from '../components/loggedinUser/Avatar'
+import reminder from '../img/icons/reminder_set.svg';
 
 export default class Toolbar extends React.Component { 
     constructor(props) {
         super(props)
         this.state = {
             menuIcon: menuBlack,
-            menuClosed: true
+            menuClosed: true,
+            toDo: []
         }
         this.handleClickBeyondSidebar = this.handleClickBeyondSidebar.bind(this)
         this.mobileMenuToggle = this.mobileMenuToggle.bind(this)
     }
-    logOut(){
-        localStorage.removeItem('x-access-token');
-        }
     mobileMenuToggle() {
         const mobileNav = document.querySelector('#mobileMenu')
         const contentElement = document.querySelector('#root')
-        if (mobileNav.classList == 'mmClosed') {
+        if (mobileNav.classList.value === 'mmClosed') {
             this.handleClickBeyondSidebar(contentElement, mobileNav)
             mobileNav.classList = 'mmOpen'
         } else { 
@@ -40,12 +46,20 @@ export default class Toolbar extends React.Component {
     closeMobileMenu() {
         document.querySelector('#mobileMenu').classList = 'mmClosed'
     }
+    componentDidUpdate() {
+        if(isAuthenticated() ) {
+            getTodo()   
+            .then(res => this.setState({toDo: res}))
+            .catch(err => alert(err))
+        } else;
+    }
     render() {
         const isLoggedIn = this.props.isLoggedIn
         return (
         <div >{isLoggedIn}
             {(isAuthenticated() ) ? 
                 <LoggedInMenu 
+                    todoNotification={this.state.toDo}
                     userDetails={this.props.userDetails} 
                     onClick={this.mobileMenuToggle}/>
                 :
@@ -98,7 +112,10 @@ class LoggedInMenu extends React.Component {
         }
     }
     logOut(){
-        localStorage.removeItem('x-access-token');
+        logOutTime()
+        .then(res => console.log(res))
+        .then(localStorage.removeItem('x-access-token'))
+        .catch(err => console.log(err))
         }
     render() {
         return (
@@ -119,7 +136,9 @@ class LoggedInMenu extends React.Component {
                     <div className='navBarTitle'>
                         <h1><Link to="/home">dovoli</Link></h1>
                     </div>
-                    <ul id="mainMenuList"> 
+                    <ul id="mainMenuList">
+                        <Notifications 
+                            userDetails={this.props.userDetails}/>
                         <li className="menuList">
                             <Link to="/settings">settings</Link>
                         </li>
@@ -136,9 +155,12 @@ class LoggedInMenu extends React.Component {
     }
 }
 class MobileMenu extends React.Component {
-logOut() {
-    localStorage.removeItem('x-access-token');
-}
+    logOut(){
+        logOutTime()
+        .then(res => console.log(res))
+        .then(localStorage.removeItem('x-access-token'))
+        .catch(err => console.log(err))
+        }
     render() {
         return (
             <div id="mobileMenu" className="mmClosed">
@@ -169,4 +191,86 @@ logOut() {
             </div>
         )
     }
+}
+const Notifications = (props) => {
+    const [todo, setTodo] = React.useState([])
+    const [notificationOpen, setNotificationOpen] = React.useState(0)
+    React.useEffect(() => {
+        if(isAuthenticated() ) {
+            getTodo()   
+            .then(res => setTodo(res.reverse()))
+            .catch(err => alert(err))
+        } else;
+    }, [])
+
+
+
+    const NotificationOpen = () => {
+        let notificationArray = []
+        const filterNotifications = (data) => {
+            return data.created > props.userDetails.last_loggedoff && !data.read_by.includes(props.userDetails.id)
+        }
+        setNotificationOpen(1)
+        let notificationUnread = todo.filter(filterNotifications)
+        notificationUnread.map(read => 
+            notificationRead(read.id) 
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+            )
+        }
+        const NotificationClose = () => {
+            setNotificationOpen(0)
+            getTodo()
+                .then(res => setTodo(res.reverse()))
+                .catch(err => alert(err))
+        }
+        
+    const notificationCount = () => {
+        return todo.filter(todo => todo.created > props.userDetails.last_loggedoff && !todo.read_by.includes(props.userDetails.id)).length
+        
+    }
+    const convertTime = (x) => {
+        let time = x.split('T')[1]
+        let minuites = time.split(':')[1]
+        let hour = time.split(':')[0]
+        let twelveHour = hour > 12 ? hour - 12 : hour 
+        return `${twelveHour}:${minuites} ${hour > 12 ? 'PM' : 'AM' }`
+
+    }
+    return (
+        <div className="notification-container">
+            {notificationOpen !== 0 ? 
+                <div className="notification-container-open">
+                    <h3>notifications</h3>
+                    <h4>{notificationCount()} new</h4>
+                    {todo.filter(todo => todo.created > props.userDetails.last_loggedoff && !todo.read_by.includes(props.userDetails.id)).map(todo => (
+                        <div 
+                            className='notification-list'
+                            key ={todo.id}>
+                            <p>{todo.title} {todo.created}</p>
+                            <p>{todo.read_by.includes(props.userDetails.id) ? 'yes' : 'no' }</p>
+                            <p></p>
+                        </div>
+                    ))}
+                    <h4>past</h4>
+                    {todo.map(todo => (
+                        <div 
+                            className='notification-list'
+                            key ={todo.id}>
+                            <p>{todo.title}</p> 
+                            <p>{todo.created.toLocaleString().split('T')[0]}</p>
+                            <p></p>
+                        </div>
+                    ))}
+                </div>
+                : ''
+            }
+            <img
+                onClick={() => notificationOpen === 0 ? NotificationOpen() : NotificationClose()} 
+                className="reminder-icon" 
+                src={reminder} 
+                alt="reminder" />
+            <p className="notification-number">{notificationCount()}</p> 
+        </div>
+    )
 }

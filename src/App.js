@@ -4,7 +4,6 @@ import './App.css';
 import './grid/grid.css';
 import Toolbar from './toolbar/Toolbar';
 import Hero from './hero/Hero';
-import Landing from './landing/Landing';
 import Footer from './footer/Footer';
 import Home from './home/Home';
 import Settings from './components/profile/Settings';

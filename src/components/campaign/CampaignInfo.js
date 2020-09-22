@@ -35,8 +35,8 @@ export function CampaignInfo() {
         }, []
     )
     return (
-        <Grid container item xs={12}>
-            <Grid item xs={12} md={12} lg={12}>
+        <Grid container item xs={12} justify='space-around'>
+            <Grid item xs={12} md={12} lg={6}>
             {campaign.map(campaign => (
                 <div className="card" key={campaign.id}>
                     <div className="cardHeader">
@@ -156,8 +156,8 @@ export const CampaignCallsMade = React.forwardRef((props, ref) => {
 
         <div>
             <h1>Volunteer Calls Made</h1>
-            <Grid container item xs={12}>
-                <Grid item xs={12} md={6} >
+            <Grid container item xs={12} justify="space-around">
+                <Grid item xs={12} md={6} lg={4}>
                 <div className="card">
                     <div className="cardHeader">
                         <img src={phoneCalled} className="card-header-icon" alt="phone called"/>
@@ -168,7 +168,7 @@ export const CampaignCallsMade = React.forwardRef((props, ref) => {
                     </div>
                 </div>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6} lg={4}>
                 <div className="card">
                     <div className="cardHeader">
                         <img src={phoneCalled} className="card-header-icon" alt="phone called"/>
@@ -376,7 +376,7 @@ export function CandidateCallList() {
         })
       };
     const changeContactStatus = (id, contacted) => {
-        (contacted != 1 ? contacted = 1 : contacted = 0)
+        (contacted !== 1 ? contacted = 1 : contacted = 0)
         updateContacted(id, contacted)
             .then(updateState)
             .catch(err => console.log(err))
@@ -406,7 +406,7 @@ export function CandidateCallList() {
     const classes = useStyles();
     return (
         <div>
-            <h1>Candidate Will Call List</h1>
+            <h1>Candidate Call List</h1>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="age-native-simple">contact status</InputLabel>
                 <Select
@@ -446,7 +446,6 @@ export function CandidateCallList() {
                             id={calls.id}
                             >
                             <Typography className={classes.heading}>{calls.name}</Typography>
-                            <Typography className={classes.secondaryHeading}>{calls.type}</Typography>
                         </AccordionSummary>
                         
                         <AccordionDetails>
@@ -474,12 +473,21 @@ export function CandidateCallList() {
                         </div>
                         <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <div className="cardMain">
+                            {calls.contacted === 0 ? 
                             <button 
                                 type="button" 
                                 className="load-btn" 
                                 onClick={() => changeContactStatus(calls.id, calls.contacted)}> 
                                 contacted 
+                            </button> :
+                            <button 
+                                type="button" 
+                                className="load-btn" 
+                                onClick={() => changeContactStatus(calls.id, calls.contacted)}> 
+                                not contacted 
                             </button>
+                            }
+                            
                             </div>
                         </div>
                         </AccordionDetails>
@@ -499,7 +507,6 @@ export const CandidateTodo = React.forwardRef((props, ref) => {
     const [sortTodo, setSortTodo] = React.useState({
         completed: 0
     })
-
     React.useImperativeHandle(ref, () => ({
         updateState(){
             getTodo()
@@ -508,14 +515,12 @@ export const CandidateTodo = React.forwardRef((props, ref) => {
             }
         } 
     ));
-    
     useEffect(() => {
         getTodo()
             .then(res => setTodoList(res.reverse()))
             .catch(err => console.log(err))
         }, []
     )
-
     const handleChange = (event) => {
         const name = event.target.name;
         setSortTodo({
@@ -591,7 +596,7 @@ export const CandidateTodo = React.forwardRef((props, ref) => {
         const classes = useStyles();
     return (
         <div>
-            <h1>Candidate to do List</h1>
+            <h1>Candidate to do list</h1>
             <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="age-native-simple">completed</InputLabel>
                 <Select
@@ -617,6 +622,7 @@ export const CandidateTodo = React.forwardRef((props, ref) => {
                     <Typography className={classes.heading}>{todo.title}</Typography>
                     <Typography className={classes.secondaryHeading}>
                         {`${getMonthName(todo.created.split('-')[1])}-${todo.created.split('-')[2].split('T')[0]}-${todo.created.split('-')[0]}`}</Typography>
+                    <Typography className={classes.secondaryHeading}>{todo.item_for}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                 <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -628,13 +634,22 @@ export const CandidateTodo = React.forwardRef((props, ref) => {
                 </div>
                 <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                     <div className="cardMain">
+                    {todo.completed === 0 ? 
                     <button 
                         type="button" 
                         className="load-btn"
                         onClick={() => updateTodoList(todo.id, todo.completed)} 
                         > 
-                        contacted 
+                        completed
+                    </button> : 
+                    <button 
+                        type="button" 
+                        className="load-btn"
+                        onClick={() => updateTodoList(todo.id, todo.completed)} 
+                        > 
+                        incomplete
                     </button>
+                    }
                     </div>
                 </div>
                 </AccordionDetails>
@@ -644,7 +659,6 @@ export const CandidateTodo = React.forwardRef((props, ref) => {
         </div>
     )
 })
-
 
 export function ElectionCountdown() {
     const countDownDate = new Date("Nov 3, 2020 00:00:00").getTime();

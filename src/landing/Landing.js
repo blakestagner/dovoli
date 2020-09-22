@@ -1,13 +1,9 @@
 import React from 'react';
 import './home.css';
-import graphic from './img/pencil_sideways.jpg';
 import { isAuthenticated } from '../autho/Repository';
-import { Redirect } from 'react-router-dom';
-import Register from '../register/Register'
 import alarm from './img/alarm.png'
 import notes from './img/notes.png'
 import share from './img/share.png'
-import footerPencil from './img/footer.png'
 
 
 export default class Home extends React.Component {

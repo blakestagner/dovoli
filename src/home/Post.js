@@ -1,16 +1,16 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import home from './home.css';
 import {  TextField } from '@material-ui/core';
 import { postOutreachCalls, 
         postCandidateCalls, 
         postTodoItem, 
-        postYardsignLocation } from '../autho/Repository'
+        postYardsignLocation,
+        getCampaignStaff } from '../autho/Repository'
 import Button from '@material-ui/core/Button';
 import Avatar from '../components/loggedinUser/Avatar';
 import close from '../img/icons/close.png';
 import phoneCallWhite from '../img/icons/phone_callback-white.svg';
 import flagWhite from '../img/icons/flag-white.svg';
-import phoneCallback from '../img/icons/phone_forwarded-white.svg';
 import { Grid } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -42,7 +42,7 @@ export default class Post extends React.Component {
     toggleOverlay(e) {
         this.setState({open: this.state.open ? false : true, openedPost: e})
         var app = document.getElementById('overlay')
-        if(app.classList == "") {
+        if(app.classList.value === "") {
             app.classList = "overlay"
         } else { 
             app.classList = ""
@@ -85,14 +85,14 @@ export default class Post extends React.Component {
                             onClick={() => this.toggleOverlay('log volunteer calls')}/>
                             <span className="tooltip">Log Call to Voter</span>
                         </Grid>
-                        <Grid>
+                        {/*<Grid>
                             <img
                                 alt="phone call back"
                                 src={phoneCallback} 
                                 className="post-icon"
                                 onClick={() => this.toggleOverlay('log candidate calls')}/>
                                 <span className="tooltip">Candidate call back</span>
-                        </Grid>
+                        </Grid>*/}
                         <Grid>
                             <img
                                 alt="flag"
@@ -100,7 +100,7 @@ export default class Post extends React.Component {
                                 className="post-icon" 
                                 onClick={() => this.toggleOverlay('log yardsign')}/>
                                 <span className="tooltip">Yard Sign</span>
-                        </Grid>
+                        </Grid> 
                     </Grid>
                     {this.state.openedPost === 'log todo' ? 
                         <PostTodo 
@@ -126,10 +126,21 @@ export default class Post extends React.Component {
 export const PostTodo = (props) => {
     const [postTodo, setTodo] = React.useState({
         title: '',
-        content: ''
+        content: '',
+        todo_for: 0
     });
+    const [campaignStaff, setStaff] = React.useState([])
+    
+    useEffect(() => {
+        getCampaignStaff()
+            .then(res => setStaff(res))
+            .catch(err => console.log(err))
+        }, []
+    )
+
     const handleChange = (event) => {
       setTodo({...postTodo, [event.target.name]: event.target.value});
+      console.log(postTodo)
     };
     const submitTodo = () => {
         postTodoItem(postTodo)
@@ -141,6 +152,38 @@ export const PostTodo = (props) => {
             console.log(err)
         })
     }
+    const staffList = () => {
+        let staffList = []
+        for(let i = 0; i < campaignStaff.length; i++) {
+            if(campaignStaff[i].position === 'Staff') {
+                staffList.push(campaignStaff[i].id)
+            } else;
+        }
+        return staffList
+    }
+    const useStyles = makeStyles((theme) => ({
+        formControl: {
+            margin: theme.spacing(1),
+            minWidth: 120,
+        },
+        selectEmpty: {
+            marginTop: theme.spacing(2),
+        },
+        root: {
+            width: "100%"
+            },
+        heading: {
+            fontSize: theme.typography.pxToRem(15),
+            flexBasis: '33.33%',
+            flexShrink: 0,
+            textAlign: 'left'
+            },
+        secondaryHeading: {
+            fontSize: theme.typography.pxToRem(15),
+            color: theme.palette.text.secondary,
+            },
+        }));
+        const classes = useStyles();
     return (
         <div className="post-open">
             <div className="planner-inner">
@@ -159,6 +202,44 @@ export const PostTodo = (props) => {
                                 name="title"
                                 onChange={handleChange}
                                 />
+                        </Grid>
+                        <Grid item>
+                            <FormControl className={classes.formControl}>
+                                <InputLabel htmlFor="select todo for">Person</InputLabel>
+                                <Select
+                                    native
+                                    value={postTodo.todo_for}
+                                    onChange={handleChange}
+                                    inputProps={{
+                                        name: 'todo_for'
+                                    }}
+                                    >
+                                    {campaignStaff.map(staff => (
+                                    <option key ={staff.id} value={staff.id}>{staff.fname} {staff.lname}</option>
+                                    ))}
+                                    <option value={0}>For All</option>
+                                </Select>
+                            </FormControl>
+                            {/* ( or ) <FormControl className={classes.formControl}>
+                                <InputLabel htmlFor="select todo for">Group</InputLabel>
+                                <Select
+                                    native
+                                    value={postTodo.todo_for}
+                                    onChange={handleChange}
+                                    inputProps={{
+                                        name: 'todo_for'
+                                    }}
+                                    >
+                                    {campaignStaff.filter(staff => staff.position == "Candidate").map(staff => (
+                                    <option key ={staff.id} value={staff.id}>Candidate</option>
+                                    ))}
+                                    {campaignStaff.filter(staff => staff.position == "Consultant").map(staff => (
+                                    <option key ={staff.id} value={staff.id}>Consultant</option>
+                                    ))}
+                                    <option value={staffList()}>All Staff</option>
+                                    <option value={0}>For All</option>
+                                </Select>
+                                    </FormControl>*/}
                         </Grid>
                     </Grid>
                 </div>
@@ -444,9 +525,9 @@ export const PostYardsign = (props) => {
         setYardsign({latitude: position.coords.latitude, longitude: position.coords.longitude })
     }
     const showPosition = () => {
-        if(yardSign.latitude != '' && yardSign.longitude != '') {
+        if(yardSign.latitude !== '' && yardSign.longitude !== '') {
             const img_url = `https://maps.googleapis.com/maps/api/staticmap?center=
-            "+${yardSign.latitude},${yardSign.longitude}+"&zoom=14&size=400x300&sensor=false&enableHighAccuracy=true&key=AIzaSyAxt6W7r3stRUeVq365nooP3N0ihNEfZfo`;
+            "+${yardSign.latitude},${yardSign.longitude}+"&zoom=14&size=400x300&sensor=false&enableHighAccuracy=true&key=`;
             return ( <img style={{width: '100%'}}src={img_url} /> )
         } else { return '' }
     }

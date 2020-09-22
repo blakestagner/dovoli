@@ -28,14 +28,3 @@ class LandingHero extends React.Component {
         )
     }
 }
-class LoggedinHero extends React.Component {
-    render() {
-        return (
-            <div className="loggedinImg">
-                <div className="heroText">
-
-                </div>
-            </div>
-        )
-    }
-}

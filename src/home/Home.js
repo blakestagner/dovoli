@@ -26,16 +26,17 @@ const Home = (props) => {
     const updateTodoState = () => {
         todoRef.current.updateState()
     }
+    
     return (
         <div className="main-container">
             {homeState.updateState}
             <div className="row">
-                <div className="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+                <div className="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                     <Sidenav 
                         setPlanner={setComponent}
                         />
                 </div>
-                <div className="col-xs-12 col-sm-8 col-md-7 col-lg-7">
+                <div className="col-xs-12 col-sm-9 col-md-9 col-lg-7">
                     {homeState.openComponent === 'home' ? 
                     <div>
                         <Post
@@ -56,9 +57,10 @@ const Home = (props) => {
                         <CampaignCallsMade 
                             update={homeState.updateState}/> : ''}
                     {homeState.openComponent === 'campaign info' ? 
-                        <div className="col-xs-12 col-sm-8 col-md-7 col-lg-7">
-                            <CampaignInfo />
-                            <CampaignStaff />
+                        <div>
+                            <h1>Campaign Info</h1>
+                                <CampaignInfo />
+                                <CampaignStaff />
                         </div>: ''}
                     {homeState.openComponent === 'candidate todo list' ? 
                         <CandidateTodo />
@@ -67,10 +69,8 @@ const Home = (props) => {
                             <CandidateCallList />
                         : ''}
                 </div>
-                <div className="col-xs-12 col-sm-8 col-md-2 col-lg-2">
-                    <div className="right-nav">
-                        <ElectionCountdown />
-                    </div>
+                <div className="col-xs-0 col-sm-0 col-md-2 col-lg-2">
+
                 </div >
             </div>
         </div>

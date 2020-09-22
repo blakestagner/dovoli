@@ -1,6 +1,5 @@
 import React from 'react';
 import LoggedinUser from '../loggedinUser/LoggedinUser'
-import { isAuthenticated } from '../../autho/Repository';
 import Sidenav from '../../components/sidenav/Sidenav';
 
 
